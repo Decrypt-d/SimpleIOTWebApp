@@ -39,7 +39,7 @@ function main(req,res)
 	const endpoint = getEndpoint(req.url);
 	const data = getParameter(req.url,endpoint);
 	if (endpoint == "data")
-		updateAllData(endpoint,data);
+		updateAllData(data);
 	else if (endpoint == "retrieveData")
 		sendBackData(data,res);
 	res.end("");
