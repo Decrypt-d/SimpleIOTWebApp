@@ -38,16 +38,16 @@ function sendBackData(dataToRetrieve,res)
 
 function serveResources(endpoint,res)
 {
-	if (fs.exists(__dirname + "/" + endpoint))
-	{
-		const readStream = fs.createReadStream(__dirname + "/" + endpoint,"utf-8");
-		readStream.pipe(res);
-		readStream.on('end',() => res.end());
-	}
-	else
-	{
-		res.end();
-	}
+	fs.exists(__dirname + "/" + endpoint, (exists) => {
+		if (exists) {
+			const readStream = fs.createReadStream(__dirname + "/" + endpoint, "utf-8");
+			readStream.pipe(res);
+			readStream.on('end', () => res.end());
+		}
+		else {
+			res.end();
+		}
+	})
 }
 
 function main(req,res)
