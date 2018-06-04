@@ -42,7 +42,10 @@ function serveResources(endpoint,res)
 		if (exists) {
 			const readStream = fs.createReadStream(__dirname + "/" + endpoint, "utf-8");
 			readStream.pipe(res);
-			readStream.on('end', () => res.end());
+			readStream.on('end', () => {
+				readStream.close();
+				res.end()
+			});
 		}
 		else {
 			res.end();
@@ -56,12 +59,14 @@ function main(req,res)
 	const endpoint = getEndpoint(req.url);
 	const data = getParameter(req.url,endpoint);
 	if (endpoint == "data")
+	{
 		updateAllData(data);
+		res.end("");
+	}
 	else if (endpoint == "retrieveData")
 		sendBackData(data,res);
 	else 
 		serveResources(endpoint,res);
-	res.end("");
 }
 
 
