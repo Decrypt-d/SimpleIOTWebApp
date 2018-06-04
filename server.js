@@ -1,4 +1,5 @@
 const http = require('http');
+const fs = require('fs');
 let light1Level = null;
 
 function getEndpoint(url)
@@ -35,6 +36,13 @@ function sendBackData(dataToRetrieve,res)
 		res.end(light1Level);
 }
 
+function serveResources(endpoint,res)
+{
+	const readStream = fs.createReadStream(__dirname + "/" + "endpoint","utf-8");
+	readStream.pipe(res);
+	readStream.on('end',() => res.end());
+}
+
 function main(req,res)
 {
 	res.setHeader("access-control-allow-origin","*");
@@ -44,6 +52,8 @@ function main(req,res)
 		updateAllData(data);
 	else if (endpoint == "retrieveData")
 		sendBackData(data,res);
+	else 
+		serveResources(endpoint,res);
 	res.end("");
 }
 
