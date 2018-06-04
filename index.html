@@ -22,10 +22,21 @@
     <div id="lightLevel">
 
     </div> 
+    <div id="proximity">
+
+    </div> 
     <script>
             serverUrl = "http://ec2-18-191-128-212.us-east-2.compute.amazonaws.com:8080";
             const lightLevelNum = 50;
+            const proximityLevelNum = 50;
+
             var light1Trace = {
+                x: [0],
+                y: [0],
+                type: 'scatter'
+            };
+            
+            var proximity = {
                 x: [0],
                 y: [0],
                 type: 'scatter'
@@ -73,5 +84,49 @@
                    )
            }
         updateLightLevel1();
+
+
+        function displayProximityLevel()
+            {
+                var layout = {
+                    title:"Proximity Sensor",
+                    xaxis: {
+                        title: "SECOND"
+                    },
+                    yaxis: {
+                        title: "Proximity Level",
+                        range: [0, 260],
+                        autorange: false,
+                    }
+                }
+                var data = [proximity];
+                Plotly.newPlot('proximity', data, layout);
+            }
+
+            displayProximityLevel();
+
+           function updateProximityLevel()
+            {
+               fetch(serverUrl + "/retrieveData?value=proximity", {
+                   method: "GET",
+                   header: { accept: "text/plain" }
+               }).then(
+                   (res) => res.text()
+                   ).then(
+                   (value) => {
+                       if (value != "null" || value != null) {
+                           proximity.x.push(proximity.x[proximity.x.length - 1] + 1);
+                           proximity.y.push(parseInt(value));
+                           if (proximity.x.length > proximityLevelNum) {
+                            proximity.x.shift();
+                            proximity.y.shift();
+                           }
+                           displayProximityLevel();
+                       } 
+                       setTimeout(updateProximityLevel, 900);
+                   }
+                   )
+           }
+           updateProximityLevel();
     </script>
 </body>

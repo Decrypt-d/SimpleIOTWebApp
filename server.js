@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 let light1Level = null;
+let proximity = null
 
 function getEndpoint(url)
 {
@@ -22,6 +23,8 @@ function updateData(dataToUpdate,valueToUpdate)
 {
 	if (dataToUpdate == "light1")
 		light1Level = valueToUpdate;
+	else if (dataToUpdate =="proximity")
+		proximity = valueToUpdate;
 }
 
 function updateAllData(allData)
@@ -31,9 +34,10 @@ function updateAllData(allData)
 
 function sendBackData(dataToRetrieve,res)
 {
-	console.log(dataToRetrieve);
 	if (dataToRetrieve[0][1] == "light1")
 		res.end(light1Level);
+	else if (dataToRetrieve[0][1] == "proximity")
+		res.end(proximity);
 }
 
 function serveResources(endpoint,res)
