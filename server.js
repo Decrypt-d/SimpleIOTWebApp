@@ -38,13 +38,13 @@ function sendBackData(dataToRetrieve,res)
 
 function serveResources(endpoint,res)
 {
-	try
+	if (fs.exists(__dirname + "/" + endpoint))
 	{
 		const readStream = fs.createReadStream(__dirname + "/" + endpoint,"utf-8");
 		readStream.pipe(res);
 		readStream.on('end',() => res.end());
 	}
-	catch
+	else
 	{
 		res.end();
 	}
