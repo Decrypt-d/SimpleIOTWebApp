@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<header>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</header>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+          <img src="http://geecomms.com/images/services/icon-smart-building-solutions.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          Smart Building
+        </a>
+      </nav>
+      
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <div id="lightLevel">
+
+    </div> 
+    <script>
+            serverUrl = "http://ec2-18-191-128-212.us-east-2.compute.amazonaws.com:8080";
+            const lightLevelNum = 50;
+            var light1Trace = {
+                x: [0],
+                y: [0],
+                type: 'scatter'
+            };
+
+            function displayLight1Level()
+            {
+                var layout = {
+                    title:"Light Level Detection",
+                    xaxis: {
+                        title: "SECOND"
+                    },
+                    yaxis: {
+                        title: "LIGHT LEVEL",
+                        range: [0, 35],
+                        autorange: false,
+                    }
+                }
+                var data = [light1Trace];
+                Plotly.newPlot('lightLevel', data, layout);
+            }
+
+            displayLight1Level();
+
+           function updateLightLevel1()
+            {
+               fetch(serverUrl + "/retrieveData?value=light1", {
+                   method: "GET",
+                   header: { accept: "text/plain" }
+               }).then(
+                   (res) => res.text()
+                   ).then(
+                   (value) => {
+                       if (value != "null" || value != null) {
+                           light1Trace.x.push(light1Trace.x[light1Trace.x.length - 1] + 1);
+                           light1Trace.y.push(parseInt(value));
+                           if (light1Trace.x.length > lightLevelNum) {
+                               light1Trace.x.shift();
+                               light1Trace.y.shift();
+                           }
+                           displayLight1Level();
+                       } 
+                       setTimeout(updateLightLevel1, 900);
+                   }
+                   )
+           }
+            
+    </script>
+</body>
