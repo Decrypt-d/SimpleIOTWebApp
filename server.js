@@ -38,7 +38,7 @@ function sendBackData(dataToRetrieve,res)
 
 function serveResources(endpoint,res)
 {
-	const readStream = fs.createReadStream(__dirname + "/" + "endpoint","utf-8");
+	const readStream = fs.createReadStream(__dirname + "/" + endpoint,"utf-8");
 	readStream.pipe(res);
 	readStream.on('end',() => res.end());
 }
