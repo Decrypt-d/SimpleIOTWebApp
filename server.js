@@ -13,6 +13,7 @@ function getParameter(url,endpoint)
 	url = url.substr(endpoint.length + 2,url.length);
 	const params = url.split("&");
 	const data = params.map((val) => val.split("="));
+	return data;
 }
 
 
