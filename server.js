@@ -37,6 +37,7 @@ function sendBackData(dataToRetrieve,res)
 
 function main(req,res)
 {
+	res.setHeader("access-control-allow-origin","*");
 	const endpoint = getEndpoint(req.url);
 	const data = getParameter(req.url,endpoint);
 	if (endpoint == "data")
