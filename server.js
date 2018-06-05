@@ -47,9 +47,9 @@ function sendBackData(dataToRetrieve,res)
 	else if (dataToRetrieve[0][1] == "temperature")
 		res.end(temperature);
 	else if (dataToRetrieve[0][1] == "AC")
-		res.end(ACActive)
+		res.end(ACActive.toString());
 	else if (dataToRetrieve[0][1] == "light")
-		res.end(lightActive)
+		res.end(lightActive.toString());
 }
 
 function serveResources(endpoint,res)
