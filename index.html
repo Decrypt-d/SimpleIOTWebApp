@@ -39,6 +39,8 @@
           <input id = "override2" type="radio" name="options" id="option2" autocomplete="off" checked> Off
         </label>
     </div>
+
+    <button id="lightToggle" type="button" class="btn btn-primary">Toggle Light</button>
     
     <div id="lightLevel">
 
@@ -231,5 +233,7 @@
            const override2 = document.getElementById("override2");
            override1.onchange = overrideLight;
            override2.onchange = overrideLight;
+           const toggleLight = document.getElementById("toggleLight");
+           toggleLight.onclick = () => fetch(serverUrl + "/switchLight?value=light")
     </script>
 </body>

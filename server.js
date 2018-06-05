@@ -35,8 +35,6 @@ function regulateLightLevel()
 		lightActive = true;
 	else if (shouldOverride == false)
 		lightActive = false;
-	else if (shouldOverride)
-		lightActive = !lightActive;
 }
 
 function updateData(dataToUpdate,valueToUpdate)
@@ -93,6 +91,11 @@ function serveResources(endpoint,res)
 	})
 }
 
+function toggleLight()
+{
+	lightActive = !lightActive;
+}
+
 function main(req,res)
 {
 	res.setHeader("access-control-allow-origin","*");
@@ -113,8 +116,8 @@ function main(req,res)
 	}
 	else if (endpoint == "switchLight")
 	{
-		regulateLightLevel();
-		sendBackData(data,res);
+		toggleLight();
+		res.end();
 	}
 	else 
 		serveResources(endpoint,res);
