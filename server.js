@@ -52,7 +52,12 @@ function updateAllData(allData)
 function sendBackData(dataToRetrieve,res)
 {
 	if (dataToRetrieve[0][1] == "light1")
-		res.end(light1Level);
+	{
+		if (!lightActive)
+			res.end(light1Level);
+		else 
+			res.end(230 + math.floor(math.random() * 10));
+	}
 	else if (dataToRetrieve[0][1] == "proximity")
 		res.end(proximity);
 	else if (dataToRetrieve[0][1] == "temperature")
