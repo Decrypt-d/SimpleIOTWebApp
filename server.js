@@ -23,7 +23,7 @@ function getEndpoint(url)
 function regulateACTemp()
 {
 	const decrease = Math.random();
-	const initialTemp = temperauture;
+	const initialTemp = temperature;
 	temperature -= ACTemp;
 	if (temperature > tempCutOffTemperature - 3 && returningTemp == false)
 		ACActive = true;
