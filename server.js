@@ -23,10 +23,21 @@ function getParameter(url,endpoint)
 }
 
 
+function regulateLightLevel()
+{
+	if (light1Level != null && light1Level < 30)
+		lightActive = true;
+	else
+		lightActive = false;
+}
+
 function updateData(dataToUpdate,valueToUpdate)
 {
 	if (dataToUpdate == "light1")
+	{
 		light1Level = valueToUpdate;
+		regulateLightLevel();
+	}
 	else if (dataToUpdate =="proximity")
 		proximity = valueToUpdate;
 	else if (dataToUpdate == "temperature")
@@ -53,14 +64,7 @@ function sendBackData(dataToRetrieve,res)
 }
 
 
-function regulateLightLevel()
-{
-	if (light1Level != null && light1Level < 30)
-		lightActive = true;
-	else
-		lightActive = false;
-	setTimeout(regulateLightLevel,200);
-}
+
 
 function serveResources(endpoint,res)
 {
@@ -96,6 +100,6 @@ function main(req,res)
 }
 
 
-regulateLightLevel();
+
 const server = http.createServer(main);
 server.listen(8080);
