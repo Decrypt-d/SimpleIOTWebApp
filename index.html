@@ -204,7 +204,7 @@
                         active.innerHTML = valueToGet + " is currently " + (value == "true" ? "ON" : "OFF");
                     }
                 )
-                setTimeout(getActiveData,850);
+                setTimeout(() => getActiveData(valueToGet),850);
            }
 
            getActiveData("light");
