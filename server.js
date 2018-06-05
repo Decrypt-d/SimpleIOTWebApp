@@ -23,7 +23,7 @@ function getEndpoint(url)
 function regulateACTemp()
 {
 	const decrease = Math.random();
-	const initialTemp = temperature;
+	const initialTemp = parseFloat(temperature);
 	temperature -= ACTemp;
 	if (temperature > tempCutOffTemperature - 3 && returningTemp == false)
 		ACActive = true;
@@ -91,7 +91,7 @@ function sendBackData(dataToRetrieve,res)
 	else if (dataToRetrieve[0][1] == "proximity")
 		res.end(proximity);
 	else if (dataToRetrieve[0][1] == "temperature")
-		res.end(temperature);
+		res.end(temperature.toString());
 	else if (dataToRetrieve[0][1] == "AC")
 		res.end(ACActive.toString());
 	else if (dataToRetrieve[0][1] == "light")
