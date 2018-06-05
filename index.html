@@ -201,7 +201,7 @@
                 ).then(
                     (value) =>{
                         const active = document.getElementById(valueToGet + "Active");
-                        active.innerHTML = valueToGet + " is currently " + (value || value == "true" ? "ON" : "OFF");
+                        active.innerHTML = valueToGet + " is currently " + (value == "true" ? "ON" : "OFF");
                     }
                 )
                 setTimeout(getActiveData,850);
