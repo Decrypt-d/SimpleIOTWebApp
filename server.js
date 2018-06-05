@@ -52,6 +52,16 @@ function sendBackData(dataToRetrieve,res)
 		res.end(lightActive.toString());
 }
 
+
+function regulateLightLevel()
+{
+	if (light1Level != null && light1Level < 30)
+		lightActive = true;
+	else
+		lightActive = false;
+	setTimeout(regulateLightLevel,200);
+}
+
 function serveResources(endpoint,res)
 {
 	fs.exists(__dirname + "/" + endpoint, (exists) => {
@@ -86,6 +96,6 @@ function main(req,res)
 }
 
 
-
+regulateLightLevel();
 const server = http.createServer(main);
 server.listen(8080);
