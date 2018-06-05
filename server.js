@@ -7,12 +7,18 @@ let temperature = null;
 let lightActive = false;
 let ACActive = false;
 
+let shouldOverride = false;
+
+
+let tempCutOffTemperature = 70.00;
+
 function getEndpoint(url)
 {
 	if (url.indexOf("?") != -1)
 		return url.substr(1,url.indexOf("?") - 1);
 	return url.substr(1,url.length);
 }
+
 
 function getParameter(url,endpoint)
 {
@@ -25,10 +31,12 @@ function getParameter(url,endpoint)
 
 function regulateLightLevel()
 {
-	if (light1Level != null && light1Level < 30)
+	if (light1Level != null && light1Level < 30 && shouldOverride == false)
 		lightActive = true;
-	else
+	else if (shouldOverride == false)
 		lightActive = false;
+	else if (shouldOverride)
+		lightActive = !lightActive;
 }
 
 function updateData(dataToUpdate,valueToUpdate)
@@ -68,9 +76,6 @@ function sendBackData(dataToRetrieve,res)
 		res.end(lightActive.toString());
 }
 
-
-
-
 function serveResources(endpoint,res)
 {
 	fs.exists(__dirname + "/" + endpoint, (exists) => {
@@ -100,6 +105,17 @@ function main(req,res)
 	}
 	else if (endpoint == "retrieveData")
 		sendBackData(data,res);
+	else if (endpoint == "overrideLight")
+	{
+		shouldOverride = !shouldOverride;
+		console.log(shouldOverride);
+		res.end();
+	}
+	else if (endpoint == "switchLight")
+	{
+		regulateLightLevel();
+		sendBackData(data,res);
+	}
 	else 
 		serveResources(endpoint,res);
 }

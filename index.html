@@ -27,6 +27,18 @@
     <div id="ACActive" class="alert alert-success" role="alert">
         AC is currently 
     </div>
+    <h2>
+    Override Light Control
+    </h2>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+     
+        <label class="btn btn-secondary active">
+          <input id = "override1" type="radio" name="options" id="option1" autocomplete="off"> On
+        </label>
+        <label class="btn btn-secondary">
+          <input id = "override2" type="radio" name="options" id="option2" autocomplete="off" checked> Off
+        </label>
+    </div>
     
     <div id="lightLevel">
 
@@ -210,5 +222,14 @@
            getActiveData("light");
            getActiveData("AC");
            
+           function overrideLight()
+           {
+               fetch(serverUrl + "/overrideLight?value=light");
+           }
+
+           const override1 = document.getElementById(override1);
+           const override2 = document.getElementById(override2);
+           override1.onchage = overrideLight;
+           override2.onchange = overrideLight;
     </script>
 </body>
