@@ -3,11 +3,11 @@ const fs = require('fs');
 let light1Level = null;
 let proximity = null;
 let temperature = null;
-
 let lightActive = false;
 let ACActive = false;
-
+let ACTemp = 0;
 let shouldOverride = false;
+let returningTemp = false;
 
 
 let tempCutOffTemperature = 70.00;
@@ -17,6 +17,27 @@ function getEndpoint(url)
 	if (url.indexOf("?") != -1)
 		return url.substr(1,url.indexOf("?") - 1);
 	return url.substr(1,url.length);
+}
+
+
+function regulateACTemp()
+{
+	const decrease = Math.random();
+	const initialTemp = temperauture;
+	temperature -= ACTemp;
+	if (temperature > tempCutOffTemperature - 3 && returningTemp == false)
+		ACActive = true;
+	else 
+		ACActive = false;
+	if (ACActive)
+		ACTemp += decrease;
+	else if (!ACActive && temperature < tempCutOffTemperature + 3 && ACTemp > 0)
+	{
+		ACTemp -= decrease;
+		returningTemp = true;
+	}
+	if (ACTemp < 0.5(initialTemp - tempCutOffTemperature) && returningTemp)
+		returningTemp = false;
 }
 
 
@@ -47,7 +68,10 @@ function updateData(dataToUpdate,valueToUpdate)
 	else if (dataToUpdate =="proximity")
 		proximity = valueToUpdate;
 	else if (dataToUpdate == "temperature")
+	{
 		temperature = valueToUpdate;
+		regulateACTemp();
+	}
 }
 
 function updateAllData(allData)
