@@ -36,7 +36,7 @@ function regulateACTemp()
 		ACTemp -= decrease;
 		returningTemp = true;
 	}
-	if (ACTemp < 0.5(initialTemp - tempCutOffTemperature) && returningTemp)
+	if (ACTemp < 0.5 * (initialTemp - tempCutOffTemperature) && returningTemp)
 		returningTemp = false;
 }
 
