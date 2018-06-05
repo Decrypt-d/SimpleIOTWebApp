@@ -233,7 +233,7 @@
            const override2 = document.getElementById("override2");
            override1.onchange = overrideLight;
            override2.onchange = overrideLight;
-           const toggleLight = document.getElementById("toggleLight");
+           const toggleLight = document.getElementById("lightToggle");
            toggleLight.onclick = () => fetch(serverUrl + "/switchLight?value=light")
     </script>
 </body>

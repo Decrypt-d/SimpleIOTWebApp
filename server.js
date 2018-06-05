@@ -93,7 +93,8 @@ function serveResources(endpoint,res)
 
 function toggleLight()
 {
-	lightActive = !lightActive;
+	if (shouldOverride)
+		lightActive = !lightActive;
 }
 
 function main(req,res)
