@@ -25,10 +25,15 @@
     <div id="proximity">
 
     </div> 
+
+    <div id="temperature">
+
+    </div>
     <script>
             serverUrl = "http://ec2-18-188-228-90.us-east-2.compute.amazonaws.com:8080";
             const lightLevelNum = 50;
             const proximityLevelNum = 50;
+            const temperatureLevelNum = 50;
 
             var light1Trace = {
                 x: [0],
@@ -37,6 +42,12 @@
             };
             
             var proximity = {
+                x: [0],
+                y: [0],
+                type: 'scatter'
+            };
+
+            var temperature = {
                 x: [0],
                 y: [0],
                 type: 'scatter'
@@ -128,5 +139,50 @@
                    )
            }
            updateProximityLevel();
+
+
+
+           function displayTemperatureLevel()
+            {
+                var layout = {
+                    title:"Temperature Sensor",
+                    xaxis: {
+                        title: "SECOND"
+                    },
+                    yaxis: {
+                        title: "Temperature (Fahrenheit)",
+                        range: [40, 100],
+                        autorange: false,
+                    }
+                }
+                var data = [temperature];
+                Plotly.newPlot('temperature', data, layout);
+            }
+
+            displayTemperatureLevel();
+
+           function updateTemperatureLevel()
+            {
+               fetch(serverUrl + "/retrieveData?value=temperature", {
+                   method: "GET",
+                   header: { accept: "text/plain" }
+               }).then(
+                   (res) => res.text()
+                   ).then(
+                   (value) => {
+                       if (value != "null" || value != null) {
+                           temperature.x.push(temperature.x[temperature.x.length - 1] + 1);
+                           temperature.y.push(parseInt(value));
+                           if (temperature.x.length > temperatureLevelNum) {
+                            temperature.x.shift();
+                            temperatures.y.shift();
+                           }
+                           displayTemperatureLevel();
+                       } 
+                       setTimeout(updateTemperatureLevel, 900);
+                   }
+                   )
+           }
+           updateTemperatureLevel();
     </script>
 </body>

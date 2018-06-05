@@ -1,7 +1,8 @@
 const http = require('http');
 const fs = require('fs');
 let light1Level = null;
-let proximity = null
+let proximity = null;
+let temperature = null;
 
 function getEndpoint(url)
 {
@@ -25,6 +26,8 @@ function updateData(dataToUpdate,valueToUpdate)
 		light1Level = valueToUpdate;
 	else if (dataToUpdate =="proximity")
 		proximity = valueToUpdate;
+	else if (dataToUpdate == "temperature")
+		temperature = valueToUpdate;
 }
 
 function updateAllData(allData)
@@ -38,6 +41,8 @@ function sendBackData(dataToRetrieve,res)
 		res.end(light1Level);
 	else if (dataToRetrieve[0][1] == "proximity")
 		res.end(proximity);
+	else if (dataToRetrieve[0][1] == "temperature")
+		res.end(temperature);
 }
 
 function serveResources(endpoint,res)
@@ -62,7 +67,6 @@ function main(req,res)
 	res.setHeader("access-control-allow-origin","*");
 	const endpoint = getEndpoint(req.url);
 	const data = getParameter(req.url,endpoint);
-	console.log(data);
 	if (endpoint == "data")
 	{
 		updateAllData(data);
