@@ -4,6 +4,9 @@ let light1Level = null;
 let proximity = null;
 let temperature = null;
 
+let lightActive = false;
+let ACActive = false;
+
 function getEndpoint(url)
 {
 	if (url.indexOf("?") != -1)
@@ -43,6 +46,10 @@ function sendBackData(dataToRetrieve,res)
 		res.end(proximity);
 	else if (dataToRetrieve[0][1] == "temperature")
 		res.end(temperature);
+	else if (dataToRetrieve[0][1] == "AC")
+		res.end(ACActive)
+	else if (dataToRetrieve[0][1] == "light")
+		res.end(lightActive)
 }
 
 function serveResources(endpoint,res)
