@@ -56,7 +56,7 @@ function sendBackData(dataToRetrieve,res)
 		if (!lightActive)
 			res.end(light1Level);
 		else 
-			res.end(230 + Math.floor(Math.random() * 10));
+			res.end((230 + Math.floor(Math.random() * 10)).toString());
 	}
 	else if (dataToRetrieve[0][1] == "proximity")
 		res.end(proximity);
